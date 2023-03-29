@@ -35,17 +35,14 @@ def check_win(board, row_pos, col_pos, player_color):
     return False
     
 def get_col_next_free_row_index(board, col_index):
-    inserted = False
+    free = False
     row_index = -1
     
-    while inserted == False:
-        if (row_index+1 == len(board) or (board[row_index+1][col_index] != LocType.EMPTY.value and row_index != -1)):
-            inserted = True
+    while free == False:
+        if (row_index+1 == len(board) or (board[row_index+1][col_index] != LocType.EMPTY.value)):
+            free = True
         else:
             row_index += 1
-    
-    if (inserted == False):
-        row_index = -1
         
     return row_index
     
@@ -77,6 +74,8 @@ class AI_One:
                 continue
             
             free_row_index_of_col_i = get_col_next_free_row_index(board, i)
+            if(free_row_index_of_col_i == -1):
+                continue
             i_score = self.count_nearby_same_color(board, free_row_index_of_col_i, i)
             
             if (i_score == col_score and col_index != [-1]):
@@ -100,6 +99,8 @@ class AI_One:
             copy_board = [[i for i in row] for row in board]
             
             free_row_index_of_col_i = get_col_next_free_row_index(copy_board, i)
+            if(free_row_index_of_col_i == -1):
+                continue
             
             put_token(copy_board, free_row_index_of_col_i, i, color)
             
@@ -133,6 +134,9 @@ class AI_One:
             best_col_index = self.get_best_col_index(board, locked_columns)
             copy_board = [[i for i in row] for row in board]
             free_row_index_of_col_i = get_col_next_free_row_index(copy_board, best_col_index)
+            if(free_row_index_of_col_i == -1):
+                locked_columns.append(best_col_index)
+                continue
             put_token(copy_board, free_row_index_of_col_i, best_col_index, self.self_color.value)
             index = self.get_win_index_by_color(copy_board, self.enemy_color.value)
             if (index != -1):
@@ -207,6 +211,10 @@ class Board:
         
         while self.is_running == True:
             col_index = None
+            
+            if LocType.EMPTY.value in (item for sublist in self.boardstate for item in sublist) == False:
+                print("Match nul!")
+                self.is_running = False
             
             if (self.enemyAI == True and self.current_player == enemyAiInstance.self_color):
                 col_index = enemyAiInstance.think(self.boardstate)
