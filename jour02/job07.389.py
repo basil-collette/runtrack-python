@@ -1,3 +1,4 @@
+
 import random
 from enum import Enum
 
@@ -54,7 +55,7 @@ def put_token(board, row_index, col_index, player_color):
         else:
             raise Exception('position déjà occupée!')
     
-class Connect4AI:
+class AI_One:
     def __init__(self, self_color):
         self.self_color = self_color
         self.enemy_color = LocType.RED if (self_color == LocType.YELLOW) else LocType.YELLOW
@@ -179,11 +180,11 @@ class Board:
     def let_player_play(self):
         col_index = None
         inserted = False
-        response = input('Joueur ' + str(self.current_player.name) + ' (' + str(self.current_player.value) + '), choisissez un numéro de colonne:')
+        response = input('Joueur ' + str(self.current_player.name) + '(' + str(self.current_player.value) + '), choisissez un numéro de colonne:')
         
         while (inserted == False):
             if (response.isdigit() == False or (int(response) < 0) or (int(response) > self.cols-1)):
-                response = input("Erreur: inscrivez un chiffre, de 0 à " + str(self.cols-2) + " compris:")
+                response = input("Erreur: inscrivez un chiffre, de 0 à " + str(self.cols-1) + " compris:")
             else:
                 col_index = int(response)
                 insert_row_index = get_col_next_free_row_index(self.boardstate, col_index)
@@ -202,7 +203,7 @@ class Board:
         enemyAiInstance = None
         if (self.enemyAI == True):
             enemy_color = LocType.RED if (random.randint(0, 1) == 1) else LocType.YELLOW
-            enemyAiInstance = Connect4AI(enemy_color)
+            enemyAiInstance = AI_One(enemy_color)
         
         while self.is_running == True:
             col_index = None
@@ -225,4 +226,3 @@ class Board:
 
 game = Board(7, 6, True, False)
 game.start()
-

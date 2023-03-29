@@ -1,3 +1,4 @@
+
 import random
 from enum import Enum
 
@@ -140,4 +141,3 @@ class AI_One:
                 unsafe = False
         
         return best_col_index
-
