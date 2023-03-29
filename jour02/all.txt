@@ -179,7 +179,7 @@ class Board:
     def let_player_play(self):
         col_index = None
         inserted = False
-        response = input('Joueur ' + str(self.current_player.name) + ' (' + str(self.current_player.value) + '), choisissez un numéro de colonne:')
+        response = input('Joueur ' + str(self.current_player.name) + '(' + str(self.current_player.value) + '), choisissez un numéro de colonne:')
         
         while (inserted == False):
             if (response.isdigit() == False or (int(response) < 0) or (int(response) > self.cols-1)):
